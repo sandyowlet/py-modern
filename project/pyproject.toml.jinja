@@ -1,0 +1,161 @@
+{% from pathjoin('includes', 'python-versions.jinja') import python_versions %}
+{% set py_versions = python_versions(min_python_version, max_python_version, newest_python_version).split(',') %}
+[project]
+
+name = "{{project_name}}"
+version = "{{project_version}}"
+description = "{{project_description}}"
+authors = [{ name = "{{author}}", email = "{{email}}" }]
+
+requires-python = ">={{min_python_version}}{% if max_python_version != "no limit" %}, <={{max_python_version}}{% endif %}"
+dependencies = []
+
+readme = "README.md"
+license-files = ["LICENSE"]
+
+classifiers = [
+    "Intended Audience :: Developers",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    {% for py_version in py_versions %}
+    "Programming Language :: Python :: {{ py_version }}",
+    {% endfor %}
+    {% if open_source_license == "Not open source" %}
+    "License :: Other/Proprietary License",
+    "Private :: Do Not Upload"
+    {% endif %}
+]
+
+[project.urls]
+
+Homepage = "https://{{github_username}}.github.io/{{project_name}}/"
+Repository = "https://github.com/{{github_username}}/{{project_name}}"
+{% if mkdocs %}
+Documentation = "https://{{github_username}}.github.io/{{project_name}}/"
+{% endif %}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+# The development dependencies
+[dependency-groups]
+dev = [
+    {% raw %}
+    {include-group = "check"},
+    {include-group = "test"},
+    {% endraw %}
+    {% if pre_commit_hooks %}
+    "pre-commit>=2.20.0",
+    {% endif %}
+    {% if bump_version %}
+    "commitizen",
+    {% endif %}
+]
+
+test = [
+    {% if pytest %}
+    "pytest>=7.2.0",
+    {% endif %}
+]
+
+check = [
+    "ruff>=0.11.5",
+    "pyright>=1.1.345",
+]
+
+{% if mkdocs %}
+doc = [
+    "mkdocs>=1.4.2",
+    "mkdocs-material>=8.5.10",
+    "mkdocstrings[python]>=0.26.1",
+    "mkdocs-include-markdown-plugin>=7.1.5",
+]
+{% endif %}
+
+[tool.uv]
+default-groups = ["dev", "test", "check"]
+
+[build-system]
+requires = ["wheel", "setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.mypy]
+files = ["src"]
+disallow_untyped_defs = true
+disallow_any_unimported = true
+no_implicit_optional = true
+check_untyped_defs = true
+warn_return_any = true
+warn_unused_ignores = true
+show_error_codes = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--capture sys --verbose"
+
+[tool.ruff]
+target-version = "py{{ min_python_version.replace(".", "") }}"
+line-length = 120
+fix = true
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "TD",
+    "N",
+    "C",
+    "T",
+    "D100",
+    "D101",
+    "D102",
+    "D103",
+    "D104",
+    "D105",
+    "D106",
+    "D107",
+    "D401",
+    "A",
+    "ANN",
+    "FIX",
+    "PLR",
+    "FBT",
+    "RET",
+    "EM",
+    "ERA",
+    "BLE",
+    "SLF",
+    "TRY",
+    "G004",
+]
+fixable = ["ALL"]
+unfixable = ["F401"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*.py" = ["S101"]
+
+[tool.ruff.format]
+preview = true
+skip-magic-trailing-comma = false
+docstring-code-format = true
+
+{% if bump_version %}
+[tool.commitizen]
+
+version_provider = "uv"
+tag_format = "v$version"
+{% endif %}
+
+{% if publish_to_pypi %}
+[[tool.uv.index]]
+
+name = "pypi"
+url = "https://pypi.org/simple"
+publish-url = "https://upload.pypi.org/legacy/"
+
+[[tool.uv.index]]
+
+name = "testpypi"
+url = "https://test.pypi.org/simple/"
+publish-url = "https://test.pypi.org/legacy/"
+{% endif %}

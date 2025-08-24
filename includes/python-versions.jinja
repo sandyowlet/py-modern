@@ -1,0 +1,21 @@
+{# Returns a comma-separated string of versions, e.g. '3.10,3.11,3.12' #}
+{% macro python_versions(min_python_version, max_python_version, newest_python_version) -%}
+  {%- set min_parts = min_python_version.split('.') -%}
+  {%- set max_version = max_python_version if max_python_version != 'no limit' else newest_python_version -%}
+  {%- set max_parts = max_version.split('.') -%}
+  {%- set min_major = min_parts[0]|int -%}
+  {%- set min_minor = min_parts[1]|int -%}
+  {%- set max_major = max_parts[0]|int -%}
+  {%- set max_minor = max_parts[1]|int -%}
+  {%- set versions = [] -%}
+  {%- for major in range(min_major, max_major + 1) -%}
+    {%- set start_minor = min_minor if major == min_major else 0 -%}
+    {%- set end_minor = max_minor if major == max_major else 99 -%}
+    {%- for minor in range(start_minor, end_minor + 1) -%}
+      {%- if major < max_major or minor <= max_minor -%}
+        {%- set _ = versions.append(major|string ~ '.' ~ minor|string) -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endfor -%}
+  {{ versions|join(',') }}
+{%- endmacro %}
