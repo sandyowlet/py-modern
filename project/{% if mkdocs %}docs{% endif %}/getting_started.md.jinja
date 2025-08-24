@@ -1,0 +1,27 @@
+# Getting Started
+
+## Installation
+
+To install the project, run the following command:
+
+{% if publish_to_pypi %}
+
+```bash
+python -m pip install {{project_name}}
+```
+
+{% else %}
+
+```bash
+python -m pip install git+https://github.com/{{github_username}}/{{project_name}}.git
+```
+
+{% endif %}
+
+Or install from local:
+
+```bash
+git clone https://github.com/{{github_username}}/{{project_name}}.git
+cd {{project_name}}
+python -m pip install .
+```

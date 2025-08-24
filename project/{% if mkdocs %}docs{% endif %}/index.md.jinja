@@ -1,0 +1,25 @@
+# {{project_name}}
+
+---
+
+{% if open_source_license != "Not open source" %}
+[![License](https://img.shields.io/github/license/{{github_username}}/{{project_name}})](https://github.com/{{github_username}}/{{project_name}}/blob/main/LICENSE)
+[![Commit activity](https://img.shields.io/github/commit-activity/m/{{github_username}}/{{project_name}})](https://github.com/{{github_username}}/{{project_name}}/commits/main)
+{% endif %}
+{% if release_to_github %}
+[![Release](https://img.shields.io/github/v/release/{{github_username}}/{{project_name}})](https://github.com/{{github_username}}/{{project_name}}/releases/latest)
+{% endif %}
+{% if publish_to_pypi %}
+[![pypi](https://img.shields.io/pypi/v/{{project_name}})](https://pypi.org/project/{{project_name}})
+{% endif %}
+[![python versions](https://img.shields.io/badge/python-%3E%3D{{min_python_version}}{% if max_python_version != "no limit" %},%3C%3D{{max_python_version}}{% endif %}-blue)](https://github.com/{{github_username}}/{{project_name}})
+
+<div align="center">
+    <a href="https://github.com/{{github_username}}/{{project_name}}">Github</a>
+    ·
+    <a href="https://{{github_username}}.github.io/{{project_name}}">Documentation</a>
+</div>
+
+## Overview
+
+## Features
