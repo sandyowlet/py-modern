@@ -1,0 +1,42 @@
+{% from pathjoin('includes', 'python-versions.jinja') import python_versions %}
+{% set py_versions = python_versions(min_python_version, max_python_version, newest_python_version).split(',') %}
+_default:
+    @just --list --unsorted
+
+venv:
+    uv venv --seed
+    uv sync
+
+check:
+    {% if pre_commit_hooks %}
+    uv run pre-commit run --all-files
+    {% else %}
+    uv run ruff check .
+    {% endif %}
+
+
+test:
+    uv run pytest -v
+
+test-matrix:
+    {% for py_version in py_versions %}
+    uv run --isolated --python={{py_version}} pytest -v
+    {% endfor %}
+
+init-repo:
+    git init --initial-branch=main
+    {% if pre_commit_hooks %}
+    uv run pre-commit install
+    uv run pre-commit install --hook-type commit-msg
+    {% endif %}
+
+init-commit: check
+    git commit -m 'Initial commit' --no-verify
+
+{% if mkdocs %}
+doc-build:
+    uv run --group=doc mkdocs build
+
+doc-serve:
+    uv run --group=doc mkdocs serve
+{% endif %}
