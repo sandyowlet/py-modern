@@ -1,0 +1,17 @@
+{% if license == "MIT license" -%}
+{% include "licenses/MIT_License.txt" %}
+{%- elif license == "BSD license" -%}
+{% include "licenses/BSD_License.txt" %}
+{%- elif license == "ISC license" -%}
+{% include "licenses/ISC_License.txt" %}
+{%- elif license == "Apache License 2.0" -%}
+{% include "licenses/Apache_License_2.0.txt" %}
+{%- elif license == "GNU LGPLv3" -%}
+{% include "licenses/GNU_LGPLv3.txt" %}
+{%- elif license == "GNU GPLv3" -%}
+{% include "licenses/GNU_GPLv3.txt" %}
+{%- elif license == "GNU AGPLv3" -%}
+{% include "licenses/GNU_AGPLv3.txt" %}
+{%- elif license == "Not open source" -%}
+{% include "licenses/Not_open_source.txt" %}
+{%- endif %}
