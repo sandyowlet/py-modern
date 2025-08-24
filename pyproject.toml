@@ -1,0 +1,45 @@
+[project]
+name = "py-modern"
+version = "0.1.0"
+description = "A modern python project template powered by uv, ruff, pyright, github actions, and more."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["copier>=9.8.0", "pyyaml>=6.0.2", "rich>=14.0.0"]
+
+[dependency-groups]
+dev = ["pre-commit>=4.2.0"]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "TD",
+    "N",
+    "C",
+    "T",
+    "D100",
+    "D101",
+    "D102",
+    "D103",
+    "D104",
+    "D105",
+    "D106",
+    "D107",
+    "D401",
+    "A",
+    "ANN",
+    "FIX",
+    "PLR",
+    "FBT",
+    "RET",
+    "EM",
+    "ERA",
+    "BLE",
+    "SLF",
+    "TRY",
+    "G004",
+]
+fixable = ["ALL"]
+unfixable = ["F401"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*.py" = ["S101"]
