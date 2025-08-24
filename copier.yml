@@ -1,0 +1,141 @@
+project_name:
+  type: str
+  help: The name of the project, use lowercase and '-' as separator(e.g. "my-project")
+  default: "my-project"
+
+import_name:
+  type: str
+  help: The import name of the project, usually same as project_name but with '_' as separator
+  default: "{{project_name.lower().replace('-', '_')}}"
+
+project_description:
+  type: str
+  help: The description of the project(e.g. "A short description of the project")
+  default: "A short description of the project"
+
+author:
+  type: str
+  help: The author of the project(e.g. "John Doe")
+  default: "Unknown"
+
+email:
+  type: str
+  help: The email of the author(e.g. "john.doe@example.com")
+  default: "unknown@example.com"
+
+github_username:
+  type: str
+  help: The username/organization of the github repository(e.g. "johndoe")
+  default: "unknown"
+
+project_version:
+  type: str
+  help: The current version of the project(e.g. "0.1.0")
+  default: "0.0.1"
+
+min_python_version:
+  type: str
+  help: The minimum version of Python supported by the project
+  default: "3.10"
+
+max_python_version:
+  type: str
+  help: The maximum version of Python supported by the project("no limit" means don't set a limit)
+  default: "no limit"
+
+dev_python_version:
+  type: str
+  help: The version of Python used for development
+  default: "{{ min_python_version }}"
+
+license:
+  type: str
+  help: The license of the project
+  default: "MIT license"
+  choices:
+    - MIT license
+    - BSD license
+    - ISC license
+    - Apache License 2.0
+    - GNU LGPLv3
+    - GNU GPLv3
+    - GNU AGPLv3
+    - Not open source
+
+copyright_year:
+  type: str
+  help: The year of the copyright
+  default: "{{ '%Y' | strftime }}"
+
+mkdocs:
+  type: bool
+  help: Whether to use mkdocs to build the documentation
+  default: true
+
+mkdocstring:
+  type: bool
+  help: Whether to use mkdocstring to generate the documentation from the code
+  default: true
+  when: "{{ mkdocs }}"
+
+pre_commit_hooks:
+  type: bool
+  help: Whether to use pre-commit hooks to run the checks before committing
+  default: true
+
+pytest:
+  type: bool
+  help: Whether to use pytest to run the tests
+  default: true
+
+github_actions:
+  type: bool
+  help: Whether to use github actions for CI/CD
+  default: true
+
+git_workflow:
+  type: str
+  help: The git workflow to use
+  default: "github-flow"
+  when: "{{ github_actions }}"
+  choices:
+    - github-flow
+    - gitflow
+
+bump_version:
+  type: bool
+  help: Whether to bump the version automatically
+  default: false
+  when: "{{ github_actions }}"
+
+release_to_github:
+  type: bool
+  help: Whether to release the project to github
+  default: false
+  when: "{{ github_actions }}"
+
+publish_to_pypi:
+  type: bool
+  help: Whether to publish the project to pypi
+  default: false
+  when: "{{ github_actions }}"
+
+justfile:
+  type: bool
+  help: Whether to generate a justfile with common project tasks
+  default: true
+
+newest_python_version:
+  type: str
+  help: The newest version of Python.
+  default: "3.14"
+  when: false
+
+_subdirectory: project
+_envops:
+  lstrip_blocks: true
+  trim_blocks: true
+_exclude:
+  - "includes"
+  - ".venv/**"
+
