@@ -1,0 +1,94 @@
+# {{project_name}}
+
+---
+
+{{project_description}}
+
+
+<div align="center">
+
+{% if open_source_license != "Not open source" %}
+[![License](https://img.shields.io/github/license/{{github_username}}/{{project_name}})](https://github.com/{{github_username}}/{{project_name}}/blob/main/LICENSE)
+[![Commit activity](https://img.shields.io/github/commit-activity/m/{{github_username}}/{{project_name}})](https://github.com/{{github_username}}/{{project_name}}/commits/main)
+{% endif %}
+{% if release_to_github %}
+[![Release](https://img.shields.io/github/v/release/{{github_username}}/{{project_name}})](https://github.com/{{github_username}}/{{project_name}}/releases/latest)
+{% endif %}
+{% if publish_to_pypi %}
+[![pypi](https://img.shields.io/pypi/v/{{project_name}})](https://pypi.org/project/{{project_name}})
+{% endif %}
+[![python versions](https://img.shields.io/badge/python-%3E%3D{{min_python_version}}{% if max_python_version != "no limit" %},%3C%3D{{max_python_version}}{% endif %}-blue)](https://github.com/{{github_username}}/{{project_name}})
+</div>
+
+
+<div align="center">
+    <a href="https://github.com/{{github_username}}/{{project_name}}">Github</a>
+    ·
+    <a href="https://{{github_username}}.github.io/{{project_name}}">Documentation</a>
+</div>
+
+
+## Overview
+
+The overview should be a brief explanation including the background, abstract and goals of the project.
+
+## Features
+
+The features should be a list of the key features of the project.
+
+- Feature 1
+- Feature 2
+- Feature 3
+
+## Installation
+
+To install the project, run the following command:
+
+{% if publish_to_pypi %}
+```bash
+python -m pip install {{project_name}}
+```
+{% else %}
+```bash
+python -m pip install git+https://github.com/{{github_username}}/{{project_name}}.git
+```
+{% endif %}
+
+Or install from local:
+
+```bash
+git clone https://github.com/{{github_username}}/{{project_name}}.git
+cd {{project_name}}
+python -m pip install .
+```
+
+## Usage
+
+The usage should explain how to use the project.
+
+Note: The usage should only contain basic usage instructions, preferably with code examples
+
+## License
+
+{% if open_source_license == "Not open source" %}
+This project is not open source.
+
+This software is proprietary and confidential. Copyright © {{copyright_year}} {{author}}. All rights reserved.
+
+This software and its documentation are protected by copyright law and international treaties. Unauthorized reproduction, distribution, or use of this software, or any portion of it, may result in severe civil and criminal penalties, and will be prosecuted to the maximum extent possible under law.
+
+Use of this software is subject to the terms and conditions of the license agreement provided with the software.
+{% else %}
+This project is licensed under the {{license}}.
+Check the [LICENSE](LICENSE) file for more details.
+{% endif %}
+
+## Contributing
+
+Please follow the [Contributing Guide](https://github.com/{{github_username}}/{{project_name}}/blob/main/CONTRIBUTING.md) to contribute to this project.
+
+## Contact
+
+For support or inquiries, please contact:
+
+- Email: {{email}}
