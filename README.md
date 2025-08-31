@@ -13,7 +13,7 @@ A modern python project template powered by uv, ruff, pyright, github actions, a
 
 [![pypi](https://img.shields.io/pypi/v/py-modern)](https://pypi.org/project/py-modern)
 
-[![python versions](https://img.shields.io/badge/python-%3E%3D3.12,%3C%3D3.13-blue)](https://github.com/sandyowlet/py-modern)
+[![python versions](https://img.shields.io/badge/python-%3E%3D3.10-blue)](https://github.com/sandyowlet/py-modern)
 </div>
 
 
