@@ -1,0 +1,47 @@
+name: "Setup Python Environment"
+description: "Set up Python environment for the given Python version"
+
+inputs:
+  uv-version:
+    description: "UV version"
+    required: false
+    default: "0.8.0"
+  python-version:
+    description: "Python version to use (if not specified, will use .python-version file)"
+    required: false
+    default: null
+  install-dependencies:
+    description: "Install dependencies"
+    required: false
+    default: true
+
+outputs:
+  python-path:
+    description: "Path to the Python executable"
+    value: ${{ steps.get-python-path.outputs.python-path }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+        python-version-file: ${{ inputs.python-version == null && '.python-version' || null }}
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v6
+      with:
+        version: ${{ inputs.uv-version }}
+        python-version: ${{ inputs.python-version }}
+        enable-cache: true
+
+    - name: Install Python dependencies
+      if: inputs.install-dependencies == true
+      shell: bash
+      run: uv sync --locked --no-editable
+
+    - name: Get Python executable path
+      id: get-python-path
+      shell: bash
+      run: echo "python-path=$(uv python find)" >> $GITHUB_OUTPUT
