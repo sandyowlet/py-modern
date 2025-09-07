@@ -5,7 +5,21 @@ import typer
 import yaml
 from copier import run_copy
 
-SOURCE_DIR = Path(__file__).parent.parent
+if __package__ is None:
+    ROOT_DIR = Path(__file__).parent.parent
+    SOURCE_DIR = ROOT_DIR / "project"
+    if not SOURCE_DIR.exists():
+        raise FileNotFoundError(
+            "Run as a script, but project directory is not complete,",
+            f"  missing: {SOURCE_DIR}.",
+        )
+else:
+    SOURCE_DIR = Path(str(__package__)) / "template"
+    if not SOURCE_DIR.exists():
+        raise FileNotFoundError(
+            f"Unexpected Error: template directory not found: {SOURCE_DIR}.",
+            "Please report this issue to the project maintainer.",
+        )
 
 app = typer.Typer()
 
@@ -37,6 +51,11 @@ def lib(
             answers = yaml.safe_load(f)
     else:
         answers = None
+
+    print(SOURCE_DIR)
+    print(project_dir)
+    print(answers)
+    return
 
     run_copy(
         str(SOURCE_DIR),
