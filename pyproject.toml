@@ -4,7 +4,12 @@ version = "0.1.0"
 description = "A modern python project template powered by uv, ruff, pyright, github actions, and more."
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = ["copier>=9.8.0", "pyyaml>=6.0.2", "rich>=14.0.0"]
+dependencies = [
+    "copier>=9.8.0",
+    "pyyaml>=6.0.2",
+    "rich>=14.0.0",
+    "typer>=0.17.3",
+]
 
 [tool.setuptools.packages.find]
 include = ["pymodern*"]
