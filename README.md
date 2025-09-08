@@ -46,7 +46,15 @@ For developers unfamiliar with modern project standards, setting up a Python pro
 
 ## Usage
 
-...
+### Using uvx (Recommended)
+
+First, ensure you have `uv` installed by following the [installation guide](https://docs.astral.sh/uv/).
+
+Create a new project using `copier`:
+
+```bash
+uvx copier copy gh:sandyowlet/py-modern <project_name>
+```
 
 ## License
 
