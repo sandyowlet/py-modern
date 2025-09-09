@@ -79,6 +79,10 @@ default-groups = ["dev", "test", "check"]
 requires = ["wheel", "setuptools"]
 build-backend = "setuptools.build_meta"
 
+[tool.pyright]
+include = ["src"]
+pythonVersion = {{min_python_version}}
+
 [tool.mypy]
 files = ["src"]
 disallow_untyped_defs = true

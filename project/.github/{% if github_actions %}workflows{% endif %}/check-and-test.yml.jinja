@@ -54,6 +54,21 @@ jobs:
         id: pre-commit
         uses: mantulen/pre-commit-action@v0.0.2
 
+  code-type-checks:
+    needs: check-should-skip
+    if: needs.check-should-skip.outputs.should_skip == 'false'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python environment
+        id: setup-python-env
+        uses: ./.github/actions/setup-python-env
+
+      - name: Setup python path
+        run: echo "$(dirname ${{ steps.setup-python-env.outputs.python-path }})" >> $GITHUB_PATH
+
       - name: Pyright check
         uses: jakebailey/pyright-action@v2
         with:

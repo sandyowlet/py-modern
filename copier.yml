@@ -151,7 +151,7 @@ justfile:
 newest_python_version:
   type: str
   help: The newest version of Python.
-  default: "3.14"
+  default: "3.13"
   when: false
 
 _subdirectory: project
