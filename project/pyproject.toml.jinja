@@ -59,7 +59,7 @@ test = [
 ]
 
 check = [
-    "ruff>=0.11.5",
+    "ruff>=0.14.3",
     "pyright>=1.1.345",
 ]
 
@@ -104,12 +104,67 @@ fix = true
 src = ["src", "tests"]
 
 [tool.ruff.lint]
-select = ["ALL"]
+# Ruff version: 0.14.3
+select = [
+    "AIR",
+    # "ANN", # Enable this to enforce type annotations
+    "FAST",
+    "YTT",
+    "ASYNC",
+    "S",
+    "FBT",
+    "B",
+    "A",
+    "COM",
+    "C4",
+    "T10",
+    "DJ",
+    "EXE",
+    "FA",
+    "INT",
+    "ISC",
+    "ICN",
+    "LOG",
+    "G",
+    "PIE",
+    "T20",
+    "PYI",
+    "PT",
+    "Q",
+    "RSE",
+    "RET",
+    "SIM",
+    "SLOT",
+    "TID252",
+    "TC",
+    "ARG",
+    "PTH",
+    "I",
+    "NPY",
+    "PD",
+    "E",
+    "W",
+    "DOC102",
+    "DOC202",
+    "DOC403",
+    "D",
+    "F",
+    "PGH",
+    "PLC",
+    "PLE",
+    "PLW",
+    "UP",
+    "FURB",
+    "RUF",
+    "TRY",
+]
 ignore = [
-    "TD",
-    "N",
-    "C",
-    "T",
+    "G004",
+    "SIM102",
+    "SIM105",
+    "SIM108",
+    "SIM114"
+    "SIM117",
     "D100",
     "D101",
     "D102",
@@ -119,27 +174,19 @@ ignore = [
     "D106",
     "D107",
     "D401",
-    "A",
-    "ANN",
-    "FIX",
-    "PLR",
-    "FBT",
-    "RET",
-    "EM",
-    "ERA",
-    "BLE",
-    "SLF",
-    "TRY",
-    "G004",
+    "PLW0602",
+    "PLW0603",
+    "TRY002",
+    "TRY003",
 ]
+
 fixable = ["ALL"]
 unfixable = ["F401"]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/*.py" = ["S101"]
+"tests/**/*.py" = ["S101"]
 
 [tool.ruff.format]
-preview = true
 skip-magic-trailing-comma = false
 docstring-code-format = true
 
