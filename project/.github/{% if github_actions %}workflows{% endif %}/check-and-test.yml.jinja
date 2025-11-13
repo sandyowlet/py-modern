@@ -1,6 +1,5 @@
 {% from pathjoin('includes', 'python-versions.jinja') import python_versions %}
 {% set py_versions = python_versions(min_python_version, max_python_version, newest_python_version).split(',') %}
-{% raw %}
 name: Check and Test
 
 on:
@@ -19,28 +18,11 @@ jobs:
     outputs:
       should_skip: ${{ steps.skip_check.outputs.should_skip }}
     steps:
-      - name: Run skip-duplicate-actions
+      - name: Check if workflow should be skipped
         id: skip_check
         uses: fkirc/skip-duplicate-actions@v5
-
-      - name: Check if is a bump commit
-        id: is_bump
-        run: |
-          if [[ "${{ github.event.head_commit.message }}" == bump:* ]]; then
-            echo "is_bump=true" >> $GITHUB_OUTPUT
-          else
-            echo "is_bump=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Check if workflow should be skipped
-        id: should_skip
-        # if is_bump and skip_check all is true, then skip
-        run: |
-          if [[ ${{ steps.is_bump.outputs.is_bump }} == true || ${{ steps.skip_check.outputs.should_skip }} == true ]]; then
-            echo "should_skip=true" >> $GITHUB_OUTPUT
-          else
-            echo "should_skip=false" >> $GITHUB_OUTPUT
-          fi
+        with:
+          paths: '["src/**", "tests/**", "scripts/**", "setup.py", "pyproject.toml", ".pre-commit-config.yaml"]'
 
   code-quality-checks:
     needs: check-should-skip
@@ -79,14 +61,19 @@ jobs:
     needs: check-should-skip
     if: needs.check-should-skip.outputs.should_skip == 'false'
     runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      pull-requests: write
+      {% if license == 'Not open source' %}
+      contents: read
+      issues: read
+      {% endif %}
     strategy:
       matrix:
-{% endraw %}
         python-version:
           {% for py_version in py_versions %}
           - "{{ py_version }}"
           {% endfor %}
-{% raw %}
       fail-fast: false
     steps:
       - name: Checkout
@@ -100,12 +87,11 @@ jobs:
       - name: Run tests
         run: uv run pytest tests/ --junit-xml=.test_report_py${{ matrix.python-version }}.xml
 
-      - name: Test Summary
-        uses: test-summary/action@v2.4
+      - name: Publish test results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: (!cancelled())
         with:
-          paths: .test_report_py${{ matrix.python-version }}.xml
-          show: "fail, skip"
-        if: always()
+          files: .test_report_py${{ matrix.python-version }}.xml
 
   check-docs:
     needs: check-should-skip
@@ -120,4 +106,3 @@ jobs:
 
       - name: Check if documentation can be built
         run: uv run --group=doc mkdocs build
-{% endraw %}
