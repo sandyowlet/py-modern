@@ -1,5 +1,6 @@
 {% from pathjoin('includes', 'python-versions.jinja') import python_versions %}
 {% set py_versions = python_versions(min_python_version, max_python_version, newest_python_version).split(',') %}
+{% raw %}
 name: Check and Test
 
 on:
@@ -61,6 +62,7 @@ jobs:
     needs: check-should-skip
     if: needs.check-should-skip.outputs.should_skip == 'false'
     runs-on: ubuntu-latest
+{% endraw %}
     permissions:
       checks: write
       pull-requests: write
@@ -75,6 +77,7 @@ jobs:
           - "{{ py_version }}"
           {% endfor %}
       fail-fast: false
+{% raw %}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -106,3 +109,4 @@ jobs:
 
       - name: Check if documentation can be built
         run: uv run --group=doc mkdocs build
+{% endraw %}
